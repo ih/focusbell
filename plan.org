@@ -1,0 +1,46 @@
+* purpose
+help track and improve focus
+* design
+** interface
+*** login
+start/focus button prominently displayed 
+
+graphs with relevant data are also displayed on the page
+**** after start/focus is pressed
+*** focus bell
+a periodic pop up that has two options
+
+1. i was focused since the start/last alert
+2. i was distracted at some point since the start/last alert
+
+if 1. then the time until the next alert is shortened
+else the time until the next alert is lengthened
+*** stop
+on the home page stop button replaces start button
+
+when pressed alerts stop appearing
+
+** models
+*** FocusData
+**** user
+**** sessions
+collection of session objects
+**** current_interval
+the latest interval between alerts for the user
+*** Session
+**** start_time
+**** stop_time
+**** alerts
+collection of alert objects
+*** Alert
+**** alert_time
+time when lert is displayed
+**** was_focused
+**** interval
+time that should elapse until next alert
+
+
+
+*** user data
+* implementation
+** authentication
