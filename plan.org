@@ -20,27 +20,35 @@ on the home page stop button replaces start button
 
 when pressed alerts stop appearing
 
+
+* implementation
+** DONE authentication
+use google users module
+
+
+** home
+*** add basic template for static html
+**** TODO create function to determine template path given template name
+*** pass FocusData instance for logged in user
 ** models
-*** FocusData
-**** user
-**** sessions
+*** outline
+**** FocusData
+***** user
+***** sessions
 collection of session objects
-**** current_interval
+***** current_interval
 the latest interval between alerts for the user
-*** Session
-**** start_time
-**** stop_time
-**** alerts
+**** Session
+***** start_time
+***** stop_time
+***** alerts
 collection of alert objects
-*** Alert
-**** alert_time
+**** Alert
+***** alert_time
 time when lert is displayed
-**** was_focused
-**** interval
+***** was_focused
+***** interval
 time that should elapse until next alert
 
 
-
-*** user data
-* implementation
-** authentication
+**** user data
