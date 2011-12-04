@@ -1,12 +1,13 @@
 * purpose
-help track and improve focus
+help track and improve ability to focus
 * design
 ** interface
 *** login
 start/focus button prominently displayed 
 
-graphs with relevant data are also displayed on the page
+graphs with relevant data are also displayed on the page (only after stop? to encourage starting)
 **** after start/focus is pressed
+change start button to stop
 *** focus bell
 a periodic pop up that has two options
 
@@ -20,11 +21,9 @@ on the home page stop button replaces start button
 
 when pressed alerts stop appearing
 
-
 * implementation
 ** DONE authentication
 use google users module
-
 
 ** home
 *** add basic template for static html
