@@ -23,6 +23,8 @@ when pressed alerts stop appearing
 
 * infrastructure
 ** add google appengine to PATH
+* next
+** get_focus_data_for implementation, should be similar to get_or_create
 * implementation
 ** DONE authentication
 use google users module
