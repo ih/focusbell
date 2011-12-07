@@ -2,13 +2,18 @@ from google.appengine.api import users
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from models.home import FocusData
-
+from settings import *
+import os
 #TODO move this to a separate file
+#from http://opensourcehacker.com/2011/02/28/debugging-app-engine-application-with-python-pdb-debugger/
 def debug():
     import sys
     import pdb
     pdb.Pdb(stdin=getattr(sys,'__stdin__'),stdout=getattr(sys,'__stderr__')).set_trace(sys._getframe().f_back)
 
+def render(handler, template_path, context): #TODO move this to a different location (utilities file?)
+    path = os.path.join(ROOT, TEMPLATES_ROOT+template_path)
+    return handler.response.out.write(template.render(path, context))
 
 class HomePage(webapp.RequestHandler):
     def get(self):
@@ -17,8 +22,9 @@ class HomePage(webapp.RequestHandler):
         if user: #TODO ensure every user has a focus_data object when they are created
             focus_data = get_focus_data_for(user) 
             template_values = {'focus_data': focus_data}
-            debug()
-            self.response.out.write(template.render('templates/home.html', template_values)) 
+
+            render(self, 'home.html', template_values)
+            #self.response.out.write(template.render('home.html', template_values))  #TODO* need to change path to template for deployment version
         else:
             self.redirect(users.create_login_url(self.request.uri))
 

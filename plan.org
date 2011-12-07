@@ -21,6 +21,8 @@ on the home page stop button replaces start button
 
 when pressed alerts stop appearing
 
+* infrastructure
+** add google appengine to PATH
 * implementation
 ** DONE authentication
 use google users module
