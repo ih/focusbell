@@ -1,3 +1,4 @@
+NEXT: debug FocusSession.post, figure out why session isn't saving
 * purpose
 help track and improve ability to focus
 * design
@@ -23,8 +24,6 @@ when pressed alerts stop appearing
 
 * infrastructure
 ** add google appengine to PATH
-* next
-** get_focus_data_for implementation, should be similar to get_or_create
 * implementation
 ** DONE authentication
 use google users module
@@ -35,21 +34,17 @@ use google users module
 *** pass FocusData instance for logged in user
 ** models
 *** outline
-**** FocusData
-***** user
-***** sessions
-collection of session objects
-***** current_interval
-the latest interval between alerts for the user
 **** Session
 ***** start_time
 ***** stop_time
-***** alerts
-collection of alert objects
+***** user
+reference to the user for this session
 **** Alert
 ***** alert_time
 time when lert is displayed
 ***** was_focused
+***** session
+a reference to the session the alert occurred in
 ***** interval
 time that should elapse until next alert
 

@@ -2,7 +2,12 @@
   <head>
   </head>
   <body>
-    {{ focus_data.user.email }}
-    <input type="button" value="Start" />
+    <!-- TODO add styling -->
+    Welcome {{ user.email }}
+    <br>
+    <form action="/start" method="post">
+      <input type="submit" value="Start" />
+    </form>
+    <!-- TODO have start button create a new FocusSession, turn into stop button -->
   </body>
 </html>

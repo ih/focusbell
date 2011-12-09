@@ -1,7 +1,8 @@
 from google.appengine.ext import db
-
-#each user has 
-class FocusData(db.Model): #TODO is there an easy way to experiment with models in GAE like in Django?
-    user = db.UserProperty()
-    #session is start and stop time
-
+from google.appengine.api import users
+#records time between user pressing start and stop
+class FocusSession(db.Model):
+    user = db.UserProperty(auto_current_user_add=True)
+    start = db.DateTimeProperty(auto_now_add=True)
+    stop = db.DateTimeProperty()
+    

@@ -1,25 +1,26 @@
 from google.appengine.api import users
 from google.appengine.ext import webapp
-from models.home import FocusData
 from library.app_engine import debug, render
 class HomePage(webapp.RequestHandler):
     def get(self):
         user = users.get_current_user()
-        if user: #TODO ensure every user has a focus_data object when they are created
-            focus_data = get_focus_data_for(user) 
-            template_values = {'focus_data': focus_data}
-
+        if user: 
+            template_values = {'user': user}
             render(self, 'home.html', template_values)
         else:
             self.redirect(users.create_login_url(self.request.uri))
 
-#TODO currently a stub, implement true functionality
-#TODO move this a location that improves code organization
-#return FocusData object for the given user
-def get_focus_data_for(user):
-    focus_data = FocusData()
-    focus_data.user = user
-    return focus_data
+class FocusSession(webapp.RequestHandler):
+    def post(self):
+        session = FocusSession()
+        key = session.put() #TODO figure out why session is not saving
+        debug()
+        template_values = {'session_key': key}
+        render(self, 'stop.html', template_values)
+
+    def put(self):
+        #TODO set stop time for session
+        return None
 
 
 
