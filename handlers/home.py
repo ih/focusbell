@@ -1,5 +1,6 @@
 from google.appengine.api import users
 from google.appengine.ext import webapp
+from models.home import FocusSession
 from library.app_engine import debug, render
 class HomePage(webapp.RequestHandler):
     def get(self):
@@ -10,11 +11,11 @@ class HomePage(webapp.RequestHandler):
         else:
             self.redirect(users.create_login_url(self.request.uri))
 
-class FocusSession(webapp.RequestHandler):
+class Session(webapp.RequestHandler):
     def post(self):
         session = FocusSession()
         key = session.put() #TODO figure out why session is not saving
-        debug()
+#        debug()
         template_values = {'session_key': key}
         render(self, 'stop.html', template_values)
 

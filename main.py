@@ -1,11 +1,11 @@
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from handlers.home import HomePage
-from handlers.home import FocusSession
+from handlers.home import Session
 
 application = webapp.WSGIApplication(
     [('/', HomePage),
-     ('/start', FocusSession)],
+     ('/start', Session)],
     debug=True)
 
 def main():
