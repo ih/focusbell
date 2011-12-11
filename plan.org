@@ -1,4 +1,4 @@
-NEXT: debug FocusSession.post, figure out why session isn't saving
+NEXT: add alerts
 * purpose
 help track and improve ability to focus
 * design

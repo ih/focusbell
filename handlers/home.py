@@ -2,6 +2,8 @@ from google.appengine.api import users
 from google.appengine.ext import webapp
 from models.home import FocusSession
 from library.app_engine import debug, render
+import datetime
+
 class HomePage(webapp.RequestHandler):
     def get(self):
         user = users.get_current_user()
@@ -19,9 +21,16 @@ class Session(webapp.RequestHandler):
         template_values = {'session_key': key}
         render(self, 'stop.html', template_values)
 
-    def put(self):
+class StopSession(webapp.RequestHandler):
+    def post(self):
         #TODO set stop time for session
-        return None
+        session = FocusSession.get(self.request.get('key'))
+        session.stop = datetime.datetime.now()
+        session.put()
+        #TODO get all past sessions and display in summary
+        template_values = {'session_length': session.stop - session.start}
+        render(self, 'summary.html', template_values)
+
 
 
 
