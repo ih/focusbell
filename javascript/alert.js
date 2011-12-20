@@ -4,19 +4,30 @@ $(function(){
   });
 
 function testFocus(){
+  var key = $("#key").attr("value");
   var focused = confirm("Focused since last time?");
   if(focused==true){
-    increaseInterval();
+    increaseInterval(); //TODO tweak formula for adjusting interval
   }
   else{
     decreaseInterval();
   }
   setTimeout(testFocus, interval);
+  saveAlert(key, focused, interval);
 }
+
 function increaseInterval(){
   interval *= 2;
 }
 
 function decreaseInterval(){
   interval /= 2;
+}
+
+function saveAlert(key, focused, interval){
+  interval += 1;
+  $.post("/alert", {session: key, was_focused: focused, interval: interval},
+	 function(data){
+	   alert("new alert created");
+	 });
 }

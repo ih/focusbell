@@ -1,7 +1,8 @@
 from google.appengine.api import users
 from google.appengine.ext import webapp
-from models.home import FocusSession
+from models.home import FocusSession, Alert
 from library.app_engine import debug, render
+#import json
 import datetime
 
 class HomePage(webapp.RequestHandler):
@@ -31,6 +32,16 @@ class StopSession(webapp.RequestHandler):
         template_values = {'session_length': session.stop - session.start}
         render(self, 'summary.html', template_values)
 
-
-
+class SaveAlert(webapp.RequestHandler):
+    def post(self):
+        #todo it'd be nice to process the request data as json
+        #debug()
+        was_focused = False
+        if self.request.get('was_focused') == 'true':
+            was_focused = True
+        session = FocusSession.get(self.request.get('session'))
+        interval = int(self.request.get('interval'))
+        alert = Alert(was_focused=was_focused, session=session, interval=interval)
+        alert.put()
+        
 

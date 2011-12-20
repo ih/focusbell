@@ -9,8 +9,9 @@
     New session {{ session_key }}
     <br>
     <form action="/stop" method="post">
-      <input type="hidden" name="key" value="{{session_key}}">
+      <input id="key" type="hidden" name="key" value="{{session_key}}">
       <input type="submit" value="Stop" />
     </form>
+    <!-- TODO add a button to automatically decrease interval for alert if unfocused-->
   </body>
 </html>

@@ -6,3 +6,9 @@ class FocusSession(db.Model):
     start = db.DateTimeProperty(auto_now_add=True)
     stop = db.DateTimeProperty()
     
+class Alert(db.Model):
+    time = db.DateTimeProperty(auto_now_add=True)
+    was_focused = db.BooleanProperty()
+    session = db.ReferenceProperty(FocusSession)
+    interval = db.IntegerProperty()
+    

@@ -1,4 +1,4 @@
-NEXT: add alerts
+NEXT: make starting interval be based on last interval of last session
 * purpose
 help track and improve ability to focus
 * design
