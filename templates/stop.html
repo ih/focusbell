@@ -10,8 +10,10 @@
     <br>
     <form action="/stop" method="post">
       <input id="key" type="hidden" name="key" value="{{session_key}}">
+      <input id="initial_interval" type="hidden" value="{{interval}}"> <!-- TODO find a better way to pass the inital interval to alert.js -->
       <input type="submit" value="Stop" />
     </form>
+
     <!-- TODO add a button to automatically decrease interval for alert if unfocused-->
   </body>
 </html>

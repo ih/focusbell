@@ -16,15 +16,21 @@ class HomePage(webapp.RequestHandler):
 
 class Session(webapp.RequestHandler):
     def post(self):
+        #use the last interval from the previous session as the first interval in the current session
+        initial_interval = Session.last_interval()
+        #create a new session
         session = FocusSession()
-        key = session.put() #TODO figure out why session is not saving
-#        debug()
-        template_values = {'session_key': key}
+        key = session.put() 
+        template_values = {'session_key': key, 'interval': initial_interval} #TODO add interval from previous session and use to initilize current interval
+        debug()
         render(self, 'stop.html', template_values)
+
+    @staticmethod
+    def last_interval():#TODO make last_interval a static method of Alert
+        return Alert.all().order('-time').get().interval 
 
 class StopSession(webapp.RequestHandler):
     def post(self):
-        #TODO set stop time for session
         session = FocusSession.get(self.request.get('key'))
         session.stop = datetime.datetime.now()
         session.put()

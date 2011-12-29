@@ -1,5 +1,5 @@
 $(function(){
-    interval = 2000; //TODO make interval a local variable, argument to testFocus?
+    interval = $("#initial_interval").attr("value"); //TODO make interval a local variable, argument to testFocus?
     setTimeout(testFocus, interval);
   });
 
@@ -25,9 +25,8 @@ function decreaseInterval(){
 }
 
 function saveAlert(key, focused, interval){
-  interval += 1;
   $.post("/alert", {session: key, was_focused: focused, interval: interval},
 	 function(data){
-	   alert("new alert created");
+
 	 });
 }
