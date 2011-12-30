@@ -1,9 +1,13 @@
-* NEXT: make starting interval be based on last interval of last session
-** DONE home.py get last interval from previous session inside home.py Session handler
+* NEXT: display data after session ends in summary.html
+** handlers/home.py get data for past sessions and send to summary.html
+** templates/summary.html display data for past sessions
+* progress
+** NEXT: make starting interval be based on last interval of last session
+*** DONE home.py get last interval from previous session inside home.py Session handler
 pass to template and use as the initial interval for the current session
-** DONE stop.html create a field that will have the value of the initialize interval as passed by Session handler, this will be read by alert.js
+*** DONE stop.html create a field that will have the value of the initialize interval as passed by Session handler, this will be read by alert.js
 
-** DONE alert.js set initial interval 
+*** DONE alert.js set initial interval 
 set interval variable based on the html field in stop.html
 * purpose
 help track and improve ability to focus

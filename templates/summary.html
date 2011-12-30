@@ -8,5 +8,11 @@
     <form action="/start" method="post">
       <input type="submit" value="Start" />
     </form>
+    {% for session in sessions %}
+    <p>{{session}}
+    {% endfor %}
+    {% for alert in alerts %}
+    <p>{{alert.interval}}
+    {% endfor %}
   </body>
 </html>

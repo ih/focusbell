@@ -22,7 +22,6 @@ class Session(webapp.RequestHandler):
         session = FocusSession()
         key = session.put() 
         template_values = {'session_key': key, 'interval': initial_interval} #TODO add interval from previous session and use to initilize current interval
-        debug()
         render(self, 'stop.html', template_values)
 
     @staticmethod
@@ -35,8 +34,17 @@ class StopSession(webapp.RequestHandler):
         session.stop = datetime.datetime.now()
         session.put()
         #TODO get all past sessions and display in summary
-        template_values = {'session_length': session.stop - session.start}
+        times = StopSession.session_lengths()
+
+        #TODO send alert data to be displayed
+        template_values = {'session_length': session.stop - session.start, 'sessions': times, 'alerts': Alert.all().order('-time')}
         render(self, 'summary.html', template_values)
+
+    @staticmethod
+    def session_lengths():
+        times = [session.stop - session.start for session in FocusSession.all().order('-start') if session.stop]
+        return times
+            
 
 class SaveAlert(webapp.RequestHandler):
     def post(self):

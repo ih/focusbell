@@ -17,11 +17,18 @@ function testFocus(){
 }
 
 function increaseInterval(){
-  interval *= 2;
+  interval += minutes(5);
 }
 
 function decreaseInterval(){
-  interval /= 2;
+  interval -= minutes(5);
+  if(interval < 0){
+    interval = minutes(5);
+  }
+}
+
+function minutes(milliseconds){
+  return milliseconds*60000;
 }
 
 function saveAlert(key, focused, interval){
