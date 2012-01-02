@@ -1,6 +1,5 @@
-* NEXT: display data after session ends in summary.html
-** handlers/home.py get data for past sessions and send to summary.html
-** templates/summary.html display data for past sessions
+* NEXT: fix alert to display only the alerts for the user in home.py StopSession
+
 * progress
 ** NEXT: make starting interval be based on last interval of last session
 *** DONE home.py get last interval from previous session inside home.py Session handler
@@ -9,6 +8,10 @@ pass to template and use as the initial interval for the current session
 
 *** DONE alert.js set initial interval 
 set interval variable based on the html field in stop.html
+** NEXT: display data after session ends in summary.html
+*** handlers/home.py get data for past sessions and send to summary.html
+*** templates/summary.html display data for past sessions
+
 * purpose
 help track and improve ability to focus
 * design

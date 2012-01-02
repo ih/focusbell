@@ -8,11 +8,17 @@
     <form action="/start" method="post">
       <input type="submit" value="Start" />
     </form>
+
+    <a href="{{logout_url}}">Log out<a>
     {% for session in sessions %}
-    <p>{{session}}
+    <p>{{session.length}}
+
+      {{session.intervals}}
+    <!-- {% for alert in alerts %} -->
+    <!-- <p>{{alert}} -->
+    <!-- {% endfor %} -->
+
     {% endfor %}
-    {% for alert in alerts %}
-    <p>{{alert.interval}}
-    {% endfor %}
+
   </body>
 </html>

@@ -2,6 +2,7 @@ from google.appengine.api import users
 from google.appengine.ext import webapp
 from models.home import FocusSession, Alert
 from library.app_engine import debug, render
+from settings import MINIMAL_INTERVAL
 #import json
 import datetime
 
@@ -16,40 +17,51 @@ class HomePage(webapp.RequestHandler):
 
 class Session(webapp.RequestHandler):
     def post(self):
+        user = users.get_current_user()
         #use the last interval from the previous session as the first interval in the current session
-        initial_interval = Session.last_interval()
-        #create a new session
-        session = FocusSession()
-        key = session.put() 
-        template_values = {'session_key': key, 'interval': initial_interval} #TODO add interval from previous session and use to initilize current interval
-        render(self, 'stop.html', template_values)
-
-    @staticmethod
-    def last_interval():#TODO make last_interval a static method of Alert
-        return Alert.all().order('-time').get().interval 
+        if user:
+            #create a new session
+            session = FocusSession()
+            key = session.put() 
+            initial_interval = Alert.last_interval(user)
+            template_values = {'session_key': key, 'interval': initial_interval} 
+            render(self, 'stop.html', template_values)
+        else:
+            self.redirect(users.create_login_url(self.request.uri))
 
 class StopSession(webapp.RequestHandler):
     def post(self):
-        session = FocusSession.get(self.request.get('key'))
-        session.stop = datetime.datetime.now()
-        session.put()
-        #TODO get all past sessions and display in summary
-        times = StopSession.session_lengths()
+        user = users.get_current_user()
+        if user:
+            session = FocusSession.get(self.request.get('key'))
+            session.stop = datetime.datetime.now()
+            session.put()
+            user_sessions = FocusSession.all().filter('user = ', user).order('-start')
+            user_alerts = [user_session.alert_set for user_session in user_sessions]
+            sessions = []
+            for user_session in user_sessions:
+                user_session.intervals = [alert.interval for alert in user_session.alert_set if user_session.alert_set.count() > 0]
+                sessions.append(user_session)
 
-        #TODO send alert data to be displayed
-        template_values = {'session_length': session.stop - session.start, 'sessions': times, 'alerts': Alert.all().order('-time')}
-        render(self, 'summary.html', template_values)
+                    
+            times = [user_session.length() for user_session in user_sessions]
+            
+            #TODO send alert data to be displayed, make sure alerts are for a user and pair with each session
+            template_values = {'session_length': session.stop - session.start, 'sessions': sessions, 'alerts': user_alerts, 'logout_url': users.create_logout_url(self.request.uri)}
+            render(self, 'summary.html', template_values)
+        else:
+            self.redirect(users.create_login_url(self.request.uri))
 
     @staticmethod
-    def session_lengths():
-        times = [session.stop - session.start for session in FocusSession.all().order('-start') if session.stop]
+    def session_lengths(user):
+        times = [session.stop - session.start for session in FocusSession.all().filter('user = ', user).order('-start') if session.stop] 
+
         return times
             
 
 class SaveAlert(webapp.RequestHandler):
     def post(self):
         #todo it'd be nice to process the request data as json
-        #debug()
         was_focused = False
         if self.request.get('was_focused') == 'true':
             was_focused = True
