@@ -37,27 +37,16 @@ class StopSession(webapp.RequestHandler):
             session.stop = datetime.datetime.now()
             session.put()
             user_sessions = FocusSession.all().filter('user = ', user).order('-start')
-            user_alerts = [user_session.alert_set for user_session in user_sessions]
             sessions = []
             for user_session in user_sessions:
                 user_session.intervals = [alert.interval for alert in user_session.alert_set if user_session.alert_set.count() > 0]
                 sessions.append(user_session)
-
-                    
-            times = [user_session.length() for user_session in user_sessions]
             
             #TODO send alert data to be displayed, make sure alerts are for a user and pair with each session
-            template_values = {'session_length': session.stop - session.start, 'sessions': sessions, 'alerts': user_alerts, 'logout_url': users.create_logout_url(self.request.uri)}
+            template_values = {'session_length': session.stop - session.start, 'sessions': sessions, 'logout_url': users.create_logout_url(self.request.uri)}
             render(self, 'summary.html', template_values)
         else:
             self.redirect(users.create_login_url(self.request.uri))
-
-    @staticmethod
-    def session_lengths(user):
-        times = [session.stop - session.start for session in FocusSession.all().filter('user = ', user).order('-start') if session.stop] 
-
-        return times
-            
 
 class SaveAlert(webapp.RequestHandler):
     def post(self):
