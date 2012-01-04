@@ -21,9 +21,9 @@ class Session(webapp.RequestHandler):
         #use the last interval from the previous session as the first interval in the current session
         if user:
             #create a new session
+            initial_interval = Alert.last_interval(user)
             session = FocusSession()
             key = session.put() 
-            initial_interval = Alert.last_interval(user)
             template_values = {'session_key': key, 'interval': initial_interval} 
             render(self, 'stop.html', template_values)
         else:
@@ -39,10 +39,9 @@ class StopSession(webapp.RequestHandler):
             user_sessions = FocusSession.all().filter('user = ', user).order('-start')
             sessions = []
             for user_session in user_sessions:
-                user_session.intervals = [alert.interval for alert in user_session.alert_set if user_session.alert_set.count() > 0]
-                sessions.append(user_session)
+                user_session.intervals = [alert.interval/60000 for alert in user_session.alert_set.order('time') if user_session.alert_set.count() > 0]
+                sessions.append(user_session) #TODO display human readable time
             
-            #TODO send alert data to be displayed, make sure alerts are for a user and pair with each session
             template_values = {'session_length': session.stop - session.start, 'sessions': sessions, 'logout_url': users.create_logout_url(self.request.uri)}
             render(self, 'summary.html', template_values)
         else:

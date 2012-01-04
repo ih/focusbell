@@ -6,7 +6,7 @@
   </head>
   <body>
     <!-- TODO parent template for consistent styling -->
-    New session {{ session_key }}
+    New session {{ interval }} milliseconds.
     <br>
     <form action="/stop" method="post">
       <input id="key" type="hidden" name="key" value="{{session_key}}">
